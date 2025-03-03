@@ -6,8 +6,8 @@
   "main": "script.js",
   "scripts": {
     "start": "live-server",  
-    "build:css": "cleancss -o styles.min.css styles.css",
-    "build:js": "uglifyjs script.js -o script.min.js",
+    "build:css": "cleancss -o weather-app/styles.min.css weather-app/styles.css",
+    "build:js": "uglifyjs weather-app/script.js -o weather-app/script.min.js",
     "build": "npm-run-all --parallel build:css build:js"
   },
 
