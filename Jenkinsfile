@@ -14,6 +14,9 @@ pipeline {
         }
 
         stage('Deploy to AWS S3') {
+            environment {
+        S3_BUCKET = 'my-dynamic-site' // Replace with your actual S3 bucket name
+        }
             steps {
                 withEnv(["PATH+EXTRA=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]) {
                 sh '''
