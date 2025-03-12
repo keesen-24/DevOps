@@ -1,16 +1,24 @@
 pipeline {
     agent any
+
+    environment {
+        AWS_REGION = 'us-east-1'  // Change to your AWS region
+        S3_BUCKET = 'my-dynamic-site'  // Change to your actual S3 bucket name
+    }
+
     stages {
-        stage('Build') {
+        stage('Clone Repository') {
             steps {
-                echo 'Building the project...'
+                git branch: 'main', url: 'https://github.com/keesen-24/DevOps.git'
             }
         }
-        stage('Deploy') {
+
+        stage('Deploy to AWS S3') {
             steps {
-                echo 'Deploying the website...'
+                sh '''
+                aws s3 sync . s3://$S3_BUCKET --delete
+                '''
             }
         }
     }
 }
-
