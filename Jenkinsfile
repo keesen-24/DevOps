@@ -19,9 +19,7 @@ pipeline {
         }
             steps {
                 withEnv(["PATH+EXTRA=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]) {
-                sh '''
-                aws s3 sync . s3://$S3_BUCKET --delete
-                '''
+                sh 'aws s3 sync weather-app/ s3://$S3_BUCKET --delete'
                 }
         }
     }
