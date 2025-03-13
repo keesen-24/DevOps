@@ -13,7 +13,8 @@ pipeline {
         stage('Deploy to S3') {
             steps {
                 withCredentials([aws(credentialsId: 'aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                    sh 'aws s3 sync . s3://my-dynamic-site --delete'
+                    sh 'aws s3 sync . s3://my-dynamic-site --delete --acl public-read'
+
                 }
             }
         }
