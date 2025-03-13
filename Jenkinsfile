@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'cp -r /var/lib/jenkins/.jenkins/workspace/Dynamic_site/weather-app/* /var/www/html/'
+                sh 'sudo cp -r /var/lib/jenkins/.jenkins/workspace/Dynamic_site/weather-app/* /var/www/html/'
             }
         }
     }
