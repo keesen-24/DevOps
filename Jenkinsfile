@@ -1,19 +1,18 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCESS_KEY_ID = credentials('aws-key-id')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+        AWS_REGION = 'us-east-1' // Set AWS region
     }
     stages {
         stage('Build') {
             steps {
                 echo 'Building the website...'
-                // Add build commands if needed (e.g., npm run build for React apps)
+                // Add build steps if needed
             }
         }
         stage('Deploy to S3') {
             steps {
-                withEnv(["AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY"]) {
+                withCredentials([aws(credentialsId: 'aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh 'aws s3 sync . s3://my-dynamic-site --delete'
                 }
             }
