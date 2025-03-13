@@ -1,21 +1,19 @@
 pipeline {
-    agent any{
-       stages{
+    agent any
+    stages {
         stage('Build') {
             steps {
-                sh 'echo "Building application..."'
+                sh 'echo "Building Application..."'
             }
         }
         stage('Deploy to EC2') {
             steps {
                 sshagent(['new-key']) {
                     sh '''
-                        scp -r * $EC2_USER@$EC2_HOST:$DEPLOY_DIR
-                        ssh $EC2_USER@$EC2_HOST 'sudo systemctl restart apache2'
+                        scp -r * ec2-user@3.83.141.112:/var/www/html/
                     '''
                 }
             }
         }
     }
-}
 }
