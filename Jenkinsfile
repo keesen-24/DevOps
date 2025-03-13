@@ -1,20 +1,14 @@
 pipeline {
      agent any
      stages {
+         stage('Clone Repo') {
+             steps {
+                 git branch: 'main', url: 'https://github.com/keesen-24/DevOps.git'
+             }
+         }
          stage('Build') {
              steps {
                  sh 'echo "Building application..."'
-                 sh 'echo "Building Application..."'
-             }
-         }
-         stage('Deploy to EC2') {
-             steps {
-                 sshagent(['new-key']) {
-                     sh '''
-                         scp -r * ec2-user@3.83.141.112:/var/www/html/
-                     '''
-                 }
-             }
          }
      }
  }
