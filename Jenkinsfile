@@ -1,27 +1,31 @@
 pipeline {
     agent any
-
     environment {
         AWS_REGION = 'us-east-1'  // Change to your AWS region
-        S3_BUCKET = 'my-dynamic-site'  // Change to your actual S3 bucket name
+        EC2_USER = 'ec2-user'
+        EC2_HOST = 'your-ec2-public-ip'
+        DEPLOY_DIR = '/var/www/html'
     }
-
     stages {
-        stage('Clone Repository') {
+        stage('Clone Repo') {
             steps {
-                git branch: 'main', url: 'https://github.com/keesen-24/DevOps.git'
+                git 'https://github.com/your-username/your-repo.git'
             }
         }
-
-        stage('Deploy to AWS S3') {
-            environment {
-        S3_BUCKET = 'my-dynamic-site' // Replace with your actual S3 bucket name
-        }
+        stage('Build') {
             steps {
-                withEnv(["PATH+EXTRA=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]) {
-                sh 'aws s3 sync weather-app/ s3://$S3_BUCKET --delete'
+                sh 'echo "Building application..."'
+            }
+        }
+        stage('Deploy to EC2') {
+            steps {
+                sshagent(['your-ec2-ssh-key']) {
+                    sh '''
+                        scp -r * $EC2_USER@$EC2_HOST:$DEPLOY_DIR
+                        ssh $EC2_USER@$EC2_HOST 'sudo systemctl restart apache2'
+                    '''
                 }
+            }
         }
     }
-}
 }
