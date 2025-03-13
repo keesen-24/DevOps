@@ -1,22 +1,20 @@
 pipeline {
-    agent any
-    environment {
-        AWS_REGION = 'us-east-1' // Set AWS region
-    }
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building the website...'
-                // Add build steps if needed
-            }
-        }
-        stage('Deploy to S3') {
-            steps {
-                withCredentials([aws(credentialsId: 'aws-credentials', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                    sh 'aws s3 sync . s3://my-dynamic-site --delete --acl public-read'
-
-                }
-            }
-        }
-    }
-}
+     agent any
+     stages {
+         stage('Build') {
+             steps {
+                 sh 'echo "Building application..."'
+                 sh 'echo "Building Application..."'
+             }
+         }
+         stage('Deploy to EC2') {
+             steps {
+                 sshagent(['new-key']) {
+                     sh '''
+                         scp -r * ec2-user@3.83.141.112:/var/www/html/
+                     '''
+                 }
+             }
+         }
+     }
+ }
