@@ -3,7 +3,7 @@ pipeline {
     environment {
         AWS_REGION = 'us-east-1'  // Change to your AWS region
         EC2_USER = 'ec2-user'
-        EC2_HOST = 'your-ec2-public-ip'
+        EC2_HOST = '3.83.141.112'
         DEPLOY_DIR = '/var/www/html'
     }
     stages {
@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Deploy to EC2') {
             steps {
-                sshagent(['your-ec2-ssh-key']) {
+                sshagent(['new-key']) {
                     sh '''
                         scp -r * $EC2_USER@$EC2_HOST:$DEPLOY_DIR
                         ssh $EC2_USER@$EC2_HOST 'sudo systemctl restart apache2'
