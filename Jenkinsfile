@@ -1,18 +1,19 @@
 pipeline {
     agent any
+    environment {
+        S3_BUCKET = 'my-dynamic-site'
+    }
     stages {
         stage('Build') {
             steps {
-                sh 'echo "Building Application..."'
+                echo 'Building the website...'
+                // Add build steps if required
             }
         }
-        stage('Deploy to EC2') {
+        stage('Deploy to S3') {
             steps {
-                sshagent(['new-key']) {
-                    sh '''
-                        scp -r * ec2-user@3.83.141.112:/var/www/html/
-                    '''
-                }
+                echo 'Deploying to AWS S3...'
+                sh 'aws s3 sync . s3://$S3_BUCKET --delete'
             }
         }
     }
