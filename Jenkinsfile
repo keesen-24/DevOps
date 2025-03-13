@@ -1,11 +1,5 @@
 pipeline {
     agent any
-    environment {
-        AWS_REGION = 'us-east-1'  // Change to your AWS region
-        EC2_USER = 'ec2-user'
-        EC2_HOST = '3.83.141.112'
-        DEPLOY_DIR = '/var/www/html'
-    }
     stages {
         stage('Clone Repo') {
             steps {
